@@ -1,0 +1,45 @@
+8 -> 23
+10 -> 31
+100 -> 3043
+1000 -> 304191 (1 sec)
+10000 -> 30397485 (8 secs)
+100000 -> 3039650753 ???!?
+1000000 -> 303963552391 (record was 1 hour and 7 minutes)
+
+I used the Stern_Brocot Tree:
+http://mathworld.wolfram.com/Stern-BrocotTree.html
+
+It runs in about 2 seconds. Here's my code:
+Var
+   b: boolean;
+   n,r: longint;
+
+Procedure arbol (n1,d1,n2,d2: longint);
+          var an,ad: longint;
+          begin
+          an:= n1+n2; ad:= d1+d2;
+          if (an <= ad) then
+             begin
+             if (ad+d1 <= n) then arbol (n1, d1, an, ad);
+             if (an= 1) and (ad=2) then exit;
+             if (b) then Inc(r);
+             if (an= 1) and (ad=3) then b:= true;
+             if (ad+d2 <= n) then arbol (an, ad, n2, d2);
+             end;
+          end;
+
+Begin
+     n:= 10000;
+     arbol (0,1,1,0);
+     writeln(output,r-1); readln;
+End.
+
+
+
+
+http://mathworld.wolfram.com/FareySequence.html
+
+farey(n) = 1 + sum([phi(k) for k in range(1, n+1)])
+
+
+Properties - Configuration Properties - Linker - System - Stack Reserve Size => 100000000
