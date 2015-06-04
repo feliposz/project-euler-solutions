@@ -19,3 +19,76 @@ In fact, as the complete set of minimal product-sum numbers for 2<=k<=12 is {4, 
 What is the sum of all the minimal product-sum numbers for 2<=k<=12000?
 """
 
+import operator
+from itertools import combinations_with_replacement
+from functools import reduce
+from fractions import gcd
+#from prime_decomposition import decompose
+
+minimal = {}
+
+#UPPER = 12000
+
+#minimal = [k*2 for k in range(0, UPPER)]
+#minimal[1] = 0
+                                           
+
+
+
+def divisors(n):
+    return [ d for d in range(1, n//2+1) if n % d == 0 ]
+
+def prod(iterable):
+    return reduce(operator.mul, iterable, 1)
+    
+def prime_factors(n):
+    """Returns all the prime factors of a positive integer"""
+    factors = []
+    d = 2
+    while n > 1:
+        while n % d == 0:
+            factors.append(d)
+            n //= d
+        d = d + 1
+        if d*d > n:
+            if n > 1: factors.append(n)
+            break
+    return factors
+    
+#for n in range(2, 30):
+#    factors = prime_factors(n)
+#    if len(factors) > 1 and sum(factors) <= n:
+#        print('%d => %s' % (n, str(factors)))
+for k in range(2, 12):
+    for comb in combinations_with_replacement(divisors(k*2), k):
+        p = prod(comb)
+        s = sum(comb)
+        if p == s and (k not in minimal or minimal[k] > s):
+            minimal[k] = s
+            print('k = %d, result = %d, set => %s' % (k, s, str(comb)))
+
+
+#for n in range(2, 30):
+#    #print(n)
+#    for k in range(2, 30):
+#        for comb in combinations_with_replacement(divisors(n), k):
+#            p = prod(comb)
+#            s = sum(comb)
+#            #print('c=%s, s=%d, p=%d ' % (str(comb), s, p))
+#            #if s > n or p > n:
+#            #    break
+#            if s == n and p == n:            
+#                if k not in minimal or minimal[k] > s:
+#                    minimal[k] = s
+#                    print('k = %d, result = %d, set => %s' % (k, s, str(comb)))
+
+for k, v in minimal.items():
+    print('k = %d, v = %d' % (k, v))
+
+#for k, v in minimal.items():
+#    print('k = %d, v = %d' % (k, v))
+
+    
+# NOTE: just some experiments
+# TODO: try to improve on these ideas
+
